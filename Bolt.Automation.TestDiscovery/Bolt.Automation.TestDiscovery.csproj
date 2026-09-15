@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>14.0</LangVersion>
+    <RootNamespace>Bolt.Automation.TestDiscovery</RootNamespace>
+    <StartupObject>Bolt.Automation.TestDiscovery.Program</StartupObject>
+    <GenerateProgramFile>false</GenerateProgramFile>
+    <!-- Exclude from VS Test Explorer — this is a CLI tool, not a test runner -->
+    <IsTestProject>false</IsTestProject>
+    <!-- Disable VSTest target for .NET 10 with Microsoft.Testing.Platform 2.1.0+ -->
+    <DisableVSTestTarget>true</DisableVSTestTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Reference test project to access test assembly and attributes -->
+    <ProjectReference Include="..\Bolt.Automation.Tests\Bolt.Automation.Tests.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- NUnit for test attribute types (match test project version) -->
+    <PackageReference Include="NUnit" />
+
+    <!-- Command line parsing -->
+    <PackageReference Include="CommandLineParser" />
+  </ItemGroup>
+
+</Project>

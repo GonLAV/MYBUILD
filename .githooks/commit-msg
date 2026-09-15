@@ -1,0 +1,32 @@
+#!/bin/sh
+#
+# Strip AI co-authorship / generation trailers from commit messages.
+#
+# Several coding agents append a "Co-Authored-By: <assistant>" or "Generated with ..."
+# trailer by default. Those land in develop's history on a merge commit and were flagged in
+# review on PR 84697. The repo's own rule is in CLAUDE.md ("Never do"); this hook is the
+# mechanical backstop for when an agent's built-in default wins over the written rule, or when
+# the commit is made outside an agent that reads CLAUDE.md at all.
+#
+# Strips rather than rejects: the trailer is never wanted, so removing it is always the right
+# answer, and a hard rejection mid-flow invites --no-verify. What was removed is printed.
+#
+# Enrol once per clone (nexus-dev-setup does this for you):
+#     git config core.hooksPath .githooks
+
+msg_file="$1"
+[ -f "$msg_file" ] || exit 0
+
+pattern='^[[:space:]]*(Co-[Aa]uthored-[Bb]y:[[:space:]]*(Claude|Anthropic|Copilot|Cursor|Codex|Gemini|Devin)|(🤖[[:space:]]*)?Generated with \[?(Claude|Cursor|Copilot))'
+
+removed=$(grep -inE "$pattern" "$msg_file" 2>/dev/null)
+[ -z "$removed" ] && exit 0
+
+tmp="$msg_file.nexus-tmp"
+grep -ivE "$pattern" "$msg_file" > "$tmp" && mv "$tmp" "$msg_file"
+
+echo "commit-msg: removed AI attribution trailer(s) from the commit message:" >&2
+echo "$removed" | sed 's/^/  /' >&2
+echo "  (see the 'Never do' rule in CLAUDE.md)" >&2
+
+exit 0

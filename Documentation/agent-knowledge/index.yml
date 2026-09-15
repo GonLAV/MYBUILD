@@ -1,0 +1,673 @@
+version: 1
+generated: 2026-05-28  # Phase 2a skeleton — leaves are stubs; content lands in 2b-2e.
+
+# Canonical knowledge-base index for the Nexus AI Agent Extension.
+# Consumed by `nexus-agent kb lookup` / `kb search` / `kb describe`.
+# INDEX.md is a regenerated mirror — do not edit INDEX.md by hand.
+#
+# Invariants (verified by `kb verify`):
+#   - Every entry in `topics` has a `topic`, `summary`, and `primary` path.
+#   - Every `primary` path resolves to a file under Documentation/agent-knowledge/.
+#   - Every file under Documentation/agent-knowledge/ appears as some topic's `primary`.
+#   - Every `related` entry is itself a topic key in this file.
+
+topics:
+
+  # ----------------------------------------------------------------
+  # framework — how the test framework hangs together
+  # ----------------------------------------------------------------
+
+  - topic: framework:overview
+    summary: How the framework wires up — DI flow, IScopeContext, page factories, base classes.
+    primary: framework/overview.md
+    related:
+      - framework:test-class
+      - framework:flows-executor
+      - framework:logging
+
+  - topic: framework:field-registry
+    summary: FieldRegistry mechanism — sparse dictionaries, Pages tagging, DefaultValue injection, MergeDataManager.
+    primary: framework/field-registry.md
+    related:
+      - framework:ui-field-types
+      - framework:page-objects
+      - philosophy:sparse-dictionaries
+
+  - topic: framework:accessibility
+    summary: axe-core scanning, keyboard traversal and screen-state enumeration — why a screen is not one scannable unit.
+    primary: framework/accessibility.md
+    related:
+      - framework:field-registry
+      - framework:flows-executor
+
+  - topic: framework:ui-field-types
+    summary: Taxonomy of UI field types (Input, Dropdown, NgSelect, Switcher, Checkbox) and registry strategy patterns.
+    primary: framework/ui-field-types.md
+    related:
+      - framework:field-registry
+      - recipe:locator-recipes
+
+  - topic: framework:page-objects
+    summary: PageBase contract, FillForm + ClickContinue, override patterns for custom fields.
+    primary: framework/page-objects.md
+    related:
+      - framework:field-registry
+      - recipe:override-patterns
+      - philosophy:fluent-page-objects
+
+  - topic: framework:flows-executor
+    summary: FlowType enum, FlowInitializer, PlaywrightExecutor — how flows chain pages from start to end.
+    primary: framework/flows-executor.md
+    related:
+      - framework:overview
+      - framework:test-class
+      - framework:page-objects
+
+  - topic: framework:test-class
+    summary: TestBase / UITestBase skeleton, [Tenant]/[Category] attributes, IScopeContext lifecycle, data builders.
+    primary: framework/test-class.md
+    related:
+      - framework:overview
+      - framework:logging
+      - framework:injection-tests
+      - philosophy:tests-stay-clean
+
+  - topic: framework:injection-tests
+    summary: Runtime-injected (Professional Services) tests — InjectionTestBase/UIInjectionTestBase, INJECTED_* env var contract, injected-parameter multi-state pattern.
+    primary: framework/injection-tests.md
+    related:
+      - framework:test-class
+      - philosophy:tests-stay-clean
+
+  - topic: framework:popups
+    summary: PopupBase + PopupFactory, dismiss/answer patterns, integration with PageHelper.
+    primary: framework/popups.md
+    related:
+      - troubleshooting:popup-interception
+      - troubleshooting:tab-switch-ordering
+
+  - topic: framework:logging
+    summary: IAutomationLogger — StartStep, LogApiCallAsync, LogBusinessRule, LogDataValidation.
+    primary: framework/logging.md
+    related:
+      - philosophy:logging-where-work-happens
+      - framework:test-class
+
+  - topic: framework:navigation-waits
+    summary: WaitForNavigationOrUrlContainsAsync returns bool but throws on timeout — never returns false; assert the URL, not the bool. When the destination does not resolve (chrome-error), read the target off the navigation request.
+    primary: framework/navigation-waits.md
+    related:
+      - partner:pgr-quote-status-polling
+      - framework:page-objects
+
+
+  - topic: framework:test-design
+    summary: Principles for designing tests — what to assert, how to scope, when to split (forward-port from V1 test-design skill).
+    primary: framework/test-design.md
+    related:
+      - philosophy:tests-stay-clean
+      - philosophy:when-to-automate
+      - recipe:test-review-rubric
+
+  # ----------------------------------------------------------------
+  # domain — insurance + product vocabulary
+  # ----------------------------------------------------------------
+
+  - topic: domain:glossary
+    summary: Insurance + framework vocabulary — PA/HO3/HO6, FrontEnd, LOB, partner vs tenant, FieldRegistry, Flow, ADBX.
+    primary: domain/glossary.md
+    related:
+      - domain:product-areas
+      - domain:tc-conventions
+
+  - topic: domain:tc-conventions
+    summary: How TCs are titled and structured in ADO — tenant | feature | LOB | scenario fragments.
+    primary: domain/tc-conventions.md
+    related:
+      - domain:tc-api
+      - domain:glossary
+
+  - topic: domain:tc-api
+    summary: TC fetch API semantics — NexusLogger endpoints, auth token, response shape.
+    primary: domain/tc-api.md
+    related:
+      - domain:tc-conventions
+
+  - topic: domain:product-areas
+    summary: Product areas — ADBX vs Interview vs D2C vs Partner Portal — which FrontEnd, which flows, which tenants.
+    primary: domain/product-areas.md
+    related:
+      - domain:glossary
+      - partner:index
+
+  # ----------------------------------------------------------------
+  # lob — lines of business (one per LobType enum value)
+  # ----------------------------------------------------------------
+
+  - topic: lob:index
+    summary: LobType enum reference, title-fragment decoding map, cross-LOB patterns (bundles, CovMod, result-page forms).
+    primary: domain/lob/INDEX.md
+    related:
+      - domain:glossary
+      - domain:product-areas
+      - domain:tc-conventions
+
+  - topic: lob:auto
+    summary: Personal Auto (PA) — VIN decode, driver/vehicle fields, carrier-specific D2C flows (Bristol West, Safeco).
+    primary: domain/lob/auto.md
+    related:
+      - framework:flows-executor
+      - partner:usaa
+
+  - topic: lob:home
+    summary: Homeowners (HO3) — dwelling type, construction, roof, prior claims, dog breeds.
+    primary: domain/lob/home.md
+    related:
+      - framework:flows-executor
+      - lob:condo
+      - partner:progressivepl
+
+  - topic: lob:renters
+    summary: Renters (HO4) — personal property, deductible, tenant-only fields.
+    primary: domain/lob/renters.md
+    related:
+      - framework:flows-executor
+
+  - topic: lob:condo
+    summary: Condo (HO6) — HO3 fields plus high-rise toggle, roof responsibility, floor numbers.
+    primary: domain/lob/condo.md
+    related:
+      - lob:home
+      - partner:progressivepl
+
+  - topic: lob:dwelling-fire
+    summary: Dwelling Fire (DF) — non-standard residential (rental property, vacant); no TCs in current sample.
+    primary: domain/lob/dwelling-fire.md
+    related:
+      - lob:home
+
+  - topic: lob:umbrella
+    summary: Personal liability excess coverage stacked over Auto/Home; no TCs in current sample.
+    primary: domain/lob/umbrella.md
+    related:
+      - lob:auto
+      - lob:home
+
+  - topic: lob:wc
+    summary: Workers Compensation — business profile, class codes, payroll; monopolistic-state blocks in OH/ND/WA/WY.
+    primary: domain/lob/wc.md
+    related:
+      - framework:flows-executor
+      - partner:unify
+
+  - topic: lob:gl
+    summary: General Liability — typically bundled into BOP; standalone TCs rare.
+    primary: domain/lob/gl.md
+    related:
+      - lob:bop
+
+  - topic: lob:cl-auto
+    summary: Commercial Auto — FEIN, NAIC code, business + operator + vehicle fields; KLX-specific Cert / DeclinationReason.
+    primary: domain/lob/cl-auto.md
+    related:
+      - lob:bop
+      - partner:kraftlakex
+      - partner:boltag
+
+  - topic: lob:bop
+    summary: Business Owners Policy — business contact, property, market appetite, Acord form generation.
+    primary: domain/lob/bop.md
+    related:
+      - lob:cl-auto
+      - lob:gl
+      - partner:kraftlakex
+
+  - topic: lob:flood
+    summary: Flood — property + flood zone + elevation cert; NFIP vs private.
+    primary: domain/lob/flood.md
+    related:
+      - framework:flows-executor
+
+  - topic: lob:earthquake
+    summary: Earthquake — seismic damage coverage; no TCs in current sample.
+    primary: domain/lob/earthquake.md
+    related:
+      - lob:home
+
+  - topic: lob:motorcycle
+    summary: Motorcycle — powersports flow; no TCs in current sample.
+    primary: domain/lob/motorcycle.md
+    related:
+      - lob:auto
+
+  - topic: lob:device-protection
+    summary: Device Protection — electronics coverage; no TCs in current sample.
+    primary: domain/lob/device-protection.md
+    related: []
+
+  - topic: lob:pets
+    summary: Pets — species, breed, age, bite history; Progressive dog-breed TCs (Cane Corso etc.).
+    primary: domain/lob/pets.md
+    related:
+      - partner:progressivepl
+
+  # ----------------------------------------------------------------
+  # partner — per-tenant quirks + entry points
+  # ----------------------------------------------------------------
+
+  - topic: partner:index
+    summary: Partner tenants overview — which partners exist, what FrontEnds they use, where data lives in TestDataStore.
+    primary: domain/partners/INDEX.md
+    related:
+      - partner:boltag
+      - partner:kraftlakex
+      - partner:unify
+      - partner:progressivepl
+      - partner:usaa
+      - partner:comparion
+      - partner:libertyx
+      - partner:boltaccess
+
+  - topic: partner:boltag
+    summary: BoltAG — primary white-label tenant; supports most products across Interview and D2C.
+    primary: domain/partners/boltag.md
+    related:
+      - partner:index
+      - lob:cl-auto
+      - lob:bop
+
+  - topic: partner:kraftlakex
+    summary: KraftlakeX (KLX) — CL/BOP focused; Cert/DeclinationReason quirks, class collapsing, app-form-label overlay.
+    primary: domain/partners/kraftlakex.md
+    related:
+      - partner:index
+      - lob:cl-auto
+      - lob:bop
+      - troubleshooting:floated-label-interception
+      - troubleshooting:mat-datepicker-fillasync
+
+  - topic: partner:unify
+    summary: Unify — interview frontend; WC market-availability handling for monopolistic states.
+    primary: domain/partners/unify.md
+    related:
+      - partner:index
+      - lob:wc
+
+  - topic: partner:progressivepl
+    summary: ProgressivePL (PGR) — HQX 2.0 flows, HO3/HO6 product switching, Plymouth Rock CovMod.
+    primary: domain/partners/progressivepl.md
+    related:
+      - partner:index
+      - partner:pgr-covmod-wind-hail-na
+      - lob:home
+      - lob:condo
+      - lob:pets
+
+  - topic: partner:pgr-quote-status-polling
+    summary: PGR CheckQuoteStatus — QuoteStatusWithPollingAsync polls until the expected pair and throws otherwise, so asserting that pair afterwards can never fail; read until settled instead.
+    primary: domain/partners/pgr-quote-status-polling.md
+    related:
+      - partner:progressivepl
+      - framework:navigation-waits
+
+  - topic: partner:pgr-covmod-wind-hail-na
+    summary: PGR CovMod — when a carrier returns Wind/Hail as Not-Applicable it mirrors the Standard deductible and renders no editable dropdown (flag ba-homesite-wind-hail-na).
+    primary: domain/partners/pgr-covmod-wind-hail-na.md
+    related:
+      - partner:progressivepl
+      - lob:home
+
+  - topic: partner:usaa
+    summary: USAA — SSO-driven, hardware-key login, Bristol West Auto carrier.
+    primary: domain/partners/usaa.md
+    related:
+      - partner:index
+      - lob:auto
+
+  - topic: partner:comparion
+    summary: Comparion — Personal Lines (Auto/Home); Fenris prefill flow.
+    primary: domain/partners/comparion.md
+    related:
+      - partner:index
+      - lob:auto
+      - lob:home
+
+  - topic: partner:libertyx
+    summary: LibertyX (LMX) — partner portal entry, agent-driven quoting.
+    primary: domain/partners/libertyx.md
+    related:
+      - partner:index
+
+  - topic: partner:boltaccess
+    summary: BoltAccess — admin tooling and case management surfaces.
+    primary: domain/partners/boltaccess.md
+    related:
+      - partner:index
+
+  # ----------------------------------------------------------------
+  # recipe — pattern libraries
+  # ----------------------------------------------------------------
+
+  - topic: recipe:locator-recipes
+    summary: Pattern library for locator strategies — input vs ng-select, label-vs-control, XPath OR for tenant variants.
+    primary: recipes/locator-recipes.md
+    related:
+      - framework:ui-field-types
+      - troubleshooting:locator-mismatch
+      - troubleshooting:strict-mode-multimatch
+
+  - topic: recipe:override-patterns
+    summary: Page-object override patterns A-G — conditional reveal, click-overlay, JS-fill, arrow-wrapper, first-if-missing.
+    primary: recipes/override-patterns.md
+    related:
+      - framework:page-objects
+      - troubleshooting:conditional-reveal
+      - troubleshooting:floated-label-interception
+      - troubleshooting:mat-datepicker-fillasync
+
+  - topic: recipe:test-review-rubric
+    summary: Ten-dimension rubric for reviewing automation test PRs (forward-port from V1 test-review skill).
+    primary: recipes/test-review-rubric.md
+    related:
+      - philosophy:tests-stay-clean
+      - framework:test-design
+
+  - topic: recipe:qa-scenario-format
+    summary: Declarative YAML scenario files for semi-manual QA sessions — schema, local-only storage, replay semantics, one step type per browser CLI verb.
+    primary: recipes/qa-scenario-format.md
+    related:
+      - framework:field-registry
+      - framework:flows-executor
+      - philosophy:when-to-automate
+      - recipe:recording-cleanup
+
+  - topic: recipe:recording-cleanup
+    summary: Distill a Playwright codegen recording of exploratory QA testing into a clean replayable scenario — noise heuristics (toggle pairs, refills, dead ends), registry mapping, and the mandatory intent interview.
+    primary: recipes/recording-cleanup.md
+    related:
+      - recipe:qa-scenario-format
+      - framework:field-registry
+      - troubleshooting:conditional-reveal
+
+  - topic: recipe:ui-only-entry-point-coverage
+    summary: A test that starts from a blank UI account must answer every field the API-seeded flows get from their payload — pre-flight the registry against the seed data.
+    primary: recipes/ui-only-entry-point-coverage.md
+    related:
+      - framework:field-registry
+      - troubleshooting:dropdown-option-missing
+      - troubleshooting:interactwithfield-throws-on-missing
+
+  - topic: recipe:defaults-service-testing
+    summary: How to test field defaults — lint the rule table for invariants, evaluate the matrix through the stateless GetDefaults endpoint, anchor with a few quotes, monitor two Splunk warnings.
+    primary: recipes/defaults-service-testing.md
+    related:
+      - framework:test-class
+      - framework:test-design
+      - philosophy:tests-stay-clean
+
+  # ----------------------------------------------------------------
+  # troubleshooting — symptom → cause → fix recipes (one leaf per symptom)
+  # ----------------------------------------------------------------
+
+  - topic: troubleshooting:index
+    summary: Troubleshooting recipe book — symptom → likely cause → fix; jump to matching section after page_source review.
+    primary: recipes/troubleshooting/INDEX.md
+    related:
+      - troubleshooting:field-not-found
+      - troubleshooting:locator-mismatch
+      - troubleshooting:default-reinjected
+      - troubleshooting:strict-mode-multimatch
+      - troubleshooting:conditional-reveal
+      - troubleshooting:continue-button-no-match
+      - troubleshooting:page-validation-timeout
+      - troubleshooting:popup-interception
+      - troubleshooting:typeahead-focus-race
+      - troubleshooting:disabled-button-click
+      - troubleshooting:tab-switch-ordering
+      - troubleshooting:field-validation-blocks-continue
+      - troubleshooting:vin-decode-flake
+      - troubleshooting:logger-method-naming
+      - troubleshooting:test-body-logging-missing-steps
+      - troubleshooting:break-fix-break-loop
+      - troubleshooting:div-not-supported-dropdown
+      - troubleshooting:dropdown-option-missing
+      - troubleshooting:floated-label-interception
+      - troubleshooting:mat-datepicker-fillasync
+      - troubleshooting:conditional-field-not-rendered
+
+  - topic: troubleshooting:field-not-found
+    summary: "'Could not find UIElement for field X' — registry alias / wrong FrontEnd / Pages doesn't include current page."
+    primary: recipes/troubleshooting/field-not-found.md
+    related:
+      - framework:field-registry
+
+  - topic: troubleshooting:locator-mismatch
+    summary: Page validates but field fails to fill — tenant class scheme differs, sibling lookalike, wrong element type.
+    primary: recipes/troubleshooting/locator-mismatch.md
+    related:
+      - framework:field-registry
+      - recipe:locator-recipes
+
+  - topic: troubleshooting:default-reinjected
+    summary: Field shows registry default after you set a value — MergeDataManager injected it; suppress via empty string or Pages=[].
+    primary: recipes/troubleshooting/default-reinjected.md
+    related:
+      - framework:field-registry
+      - philosophy:sparse-dictionaries
+
+  - topic: troubleshooting:strict-mode-multimatch
+    summary: "Playwright strict mode violation: locator resolves to N elements; use .First or scope to container."
+    primary: recipes/troubleshooting/strict-mode-multimatch.md
+    related:
+      - recipe:locator-recipes
+
+  - topic: troubleshooting:conditional-reveal
+    summary: Field exists in registry but not in DOM until trigger; override FillForm to fill trigger first.
+    primary: recipes/troubleshooting/conditional-reveal.md
+    related:
+      - framework:page-objects
+      - recipe:override-patterns
+
+  - topic: troubleshooting:continue-button-no-match
+    summary: "ClickContinueButton: no selector matches; add tenant-specific button class to InterviewBase or override ClickContinue."
+    primary: recipes/troubleshooting/continue-button-no-match.md
+    related:
+      - framework:page-objects
+
+  - topic: troubleshooting:page-validation-timeout
+    summary: ValidatePageReadyAsync times out — PageIdentifier substring is too narrow or wrong.
+    primary: recipes/troubleshooting/page-validation-timeout.md
+    related:
+      - framework:page-objects
+
+  - topic: troubleshooting:popup-interception
+    summary: Click intercepted by overlay label/span; click the overlay element itself.
+    primary: recipes/troubleshooting/popup-interception.md
+    related:
+      - framework:popups
+      - recipe:override-patterns
+
+  - topic: troubleshooting:typeahead-focus-race
+    summary: ng-select typeahead reverts after click; let the next field's click commit the previous typeahead.
+    primary: recipes/troubleshooting/typeahead-focus-race.md
+    related:
+      - recipe:override-patterns
+
+  - topic: troubleshooting:disabled-button-click
+    summary: Click does nothing because button is disabled — press Tab to blur input and run validators.
+    primary: recipes/troubleshooting/disabled-button-click.md
+    related:
+      - framework:page-objects
+
+  - topic: troubleshooting:tab-switch-ordering
+    summary: After ADBX popup adds a tab, switch to last tab + set FrontEnd before CreatePage<T>.
+    primary: recipes/troubleshooting/tab-switch-ordering.md
+    related:
+      - framework:overview
+      - framework:popups
+
+  - topic: troubleshooting:field-validation-blocks-continue
+    summary: Continue blocked by red validation — DefaultValue placeholder failed tenant validation; supply valid value inline.
+    primary: recipes/troubleshooting/field-validation-blocks-continue.md
+    related:
+      - framework:field-registry
+
+  - topic: troubleshooting:vin-decode-flake
+    summary: VIN decode signal never arrives; catch TimeoutException + warn + let downstream fields fail loudly.
+    primary: recipes/troubleshooting/vin-decode-flake.md
+    related:
+      - lob:auto
+      - lob:cl-auto
+
+  - topic: troubleshooting:logger-method-naming
+    summary: "_logger?.Warn doesn't exist — use Warning. Same for Info/Error/Debug/Fatal."
+    primary: recipes/troubleshooting/logger-method-naming.md
+    related:
+      - framework:logging
+
+  - topic: troubleshooting:test-body-logging-missing-steps
+    summary: Test body uses Info() instead of StartStep — report has no step scopes; wrap test phases in steps.
+    primary: recipes/troubleshooting/test-body-logging-missing-steps.md
+    related:
+      - framework:logging
+      - philosophy:logging-where-work-happens
+      - philosophy:tests-stay-clean
+
+  - topic: troubleshooting:break-fix-break-loop
+    summary: Two unrelated fixes interfere with each other; revert, apply one fix per iteration, commit between.
+    primary: recipes/troubleshooting/break-fix-break-loop.md
+    related: []
+
+  - topic: troubleshooting:div-not-supported-dropdown
+    summary: "'tag div not supported dropdown type' — locator ends on inner div; switch end-anchor to //ng-select."
+    primary: recipes/troubleshooting/div-not-supported-dropdown.md
+    related:
+      - recipe:locator-recipes
+      - framework:ui-field-types
+
+  - topic: troubleshooting:dropdown-option-missing
+    summary: Dropdown opens but option text not found — option varies by carrier; use firstIfMissing fallback.
+    primary: recipes/troubleshooting/dropdown-option-missing.md
+    related:
+      - recipe:override-patterns
+
+  - topic: troubleshooting:floated-label-interception
+    summary: <app-form-label> intercepts pointer events on ng-select; click .ng-arrow-wrapper instead.
+    primary: recipes/troubleshooting/floated-label-interception.md
+    related:
+      - recipe:override-patterns
+      - partner:kraftlakex
+
+  - topic: troubleshooting:mat-datepicker-fillasync
+    summary: FillAsync rejected on mat-datepicker hidden input; JS set + dispatch input/change/blur events.
+    primary: recipes/troubleshooting/mat-datepicker-fillasync.md
+    related:
+      - recipe:override-patterns
+      - partner:kraftlakex
+
+  - topic: troubleshooting:interactwithfield-throws-on-missing
+    summary: "Callback dies on a field FillForm skipped happily — InteractWithField forces IgnoreIfNotFound = false."
+    primary: recipes/troubleshooting/interactwithfield-throws-on-missing.md
+    related:
+      - troubleshooting:conditional-field-not-rendered
+      - troubleshooting:field-not-found
+      - recipe:ui-only-entry-point-coverage
+
+  - topic: troubleshooting:reading-captured-page-source
+    summary: "Which signals in a captured interview page_source are trustworthy — radio attributes and ng-invalid are not."
+    primary: recipes/troubleshooting/reading-captured-page-source.md
+    related:
+      - troubleshooting:conditional-field-not-rendered
+      - troubleshooting:page-validation-timeout
+
+  - topic: troubleshooting:switcher-answer-not-recorded
+    summary: "Switcher click reports success but the answer is not recorded; Next stays disabled and the control is not ng-invalid."
+    primary: recipes/troubleshooting/switcher-answer-not-recorded.md
+    related:
+      - troubleshooting:reading-captured-page-source
+      - troubleshooting:disabled-button-click
+      - framework:ui-field-types
+
+  - topic: troubleshooting:all-tests-skip-vpn
+    summary: "Every test skips, even ungated ones — corporate VPN is down; check DNS before debugging RunIn."
+    primary: recipes/troubleshooting/all-tests-skip-vpn.md
+    related:
+      - framework:test-class
+
+  - topic: troubleshooting:conditional-field-not-rendered
+    summary: "Override skip log 'container not present' — field is conditionally rendered, order trigger fields first."
+    primary: recipes/troubleshooting/conditional-field-not-rendered.md
+    related:
+      - recipe:override-patterns
+      - troubleshooting:conditional-reveal
+
+  - topic: troubleshooting:reveal-on-answer-questionset
+    summary: "Question-set validation shows 'extra' sub-fields; expected list undercounts because children reveal only after a parent is answered — trust the live run, not static DOM or the manual TC list."
+    primary: recipes/troubleshooting/reveal-on-answer-questionset.md
+    related:
+      - troubleshooting:conditional-reveal
+      - recipe:override-patterns
+
+  # ----------------------------------------------------------------
+  # philosophy — design principles guiding the framework
+  # ----------------------------------------------------------------
+
+  - topic: philosophy:index
+    summary: Design principles guiding the framework — read first when reviewing changes that touch shared abstractions.
+    primary: philosophy/INDEX.md
+    related:
+      - philosophy:sparse-dictionaries
+      - philosophy:logging-where-work-happens
+      - philosophy:fluent-page-objects
+      - philosophy:tests-stay-clean
+      - philosophy:compact-comments
+      - philosophy:when-to-automate
+      - philosophy:design-decisions
+
+  - topic: philosophy:sparse-dictionaries
+    summary: Why FieldRegistry is sparse and Pages-tagged — agent fills only what's relevant, defaults handle the rest.
+    primary: philosophy/sparse-dictionaries.md
+    related:
+      - framework:field-registry
+      - troubleshooting:default-reinjected
+
+  - topic: philosophy:logging-where-work-happens
+    summary: Logging lives in page objects + API clients, never in test methods — keeps tests as orchestration.
+    primary: philosophy/logging-where-work-happens.md
+    related:
+      - framework:logging
+      - framework:test-class
+      - philosophy:tests-stay-clean
+
+  - topic: philosophy:fluent-page-objects
+    summary: Page objects expose intent (FillField, ClickContinue), not Playwright primitives — tests stay readable.
+    primary: philosophy/fluent-page-objects.md
+    related:
+      - framework:page-objects
+
+  - topic: philosophy:tests-stay-clean
+    summary: Test methods are high-level step orchestration + business validations; no Playwright calls, no DOM grep, no log Info().
+    primary: philosophy/tests-stay-clean.md
+    related:
+      - framework:test-class
+      - philosophy:logging-where-work-happens
+      - philosophy:compact-comments
+
+  - topic: philosophy:compact-comments
+    summary: Comments explain the non-obvious why, compactly; no step narration; wide-relevance knowledge goes to the KB, not inline.
+    primary: philosophy/compact-comments.md
+    related:
+      - philosophy:tests-stay-clean
+      - recipe:test-review-rubric
+
+  - topic: philosophy:when-to-automate
+    summary: Deciding which TCs are worth automating — value, churn, flake risk, manual cost (forward-port from V1 automation-triage).
+    primary: philosophy/when-to-automate.md
+    related:
+      - recipe:test-review-rubric
+      - framework:test-design
+
+  - topic: philosophy:design-decisions
+    summary: ADR placeholder — records the why behind major framework decisions (additive, append-only).
+    primary: philosophy/design-decisions.md
+    related: []

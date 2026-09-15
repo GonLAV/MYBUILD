@@ -1,0 +1,8 @@
+{
+  "general": {
+    "provider": "SqlServer",
+    "connection": "Data Source=QADB03;Initial Catalog=Epos_ProgressivePL;Persist Security Info=True;Integrated Security=SSPI;TrustServerCertificate=True",
+    "output": "C:\\Users\\leeg\\source\\repos\\bolt_automation_nexus\\Bolt.Automation.InternalServices\\Database\\Entities",
+    "overwrite": true
+  }
+}

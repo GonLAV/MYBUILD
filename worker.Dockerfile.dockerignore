@@ -1,0 +1,65 @@
+# worker.Dockerfile.dockerignore
+# Same as .dockerignore but keeps .git so the worker can do self-update (git fetch/checkout)
+
+# Ignore IDE files
+.vs/
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Ignore build artifacts (we build inside Docker)
+**/bin/
+**/obj/
+**/node_modules/
+
+# Ignore test results
+**/TestResults/
+**/artifacts/
+**/logs/
+*.trx
+*.log
+
+# Ignore NuGet packages (already restored)
+packages/
+.nuget/packages/
+
+# Ignore temporary files
+*.tmp
+*.temp
+*.cache
+*.bak
+*.swp
+*~
+
+# Ignore documentation (unless needed)
+Documentation/
+*.md
+!README.md
+
+# Ignore CI/CD files
+.azure-pipelines/
+.github/
+azure-pipelines*.yml
+.gitlab-ci.yml
+
+# Ignore local settings
+*.local.*
+**/appsettings.Development.json
+**/appsettings.Local.json
+runsettings.local.json
+local.runsettings
+
+# Ignore screenshots and videos (test artifacts)
+**/screenshots/
+**/videos/
+**/traces/
+
+# Docker files (don't need these in the image)
+Dockerfile
+worker.Dockerfile
+.dockerignore
+worker.Dockerfile.dockerignore
+docker-compose*.yml

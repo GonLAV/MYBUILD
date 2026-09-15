@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <IsPackable>false</IsPackable>
+    <IsTestProject>false</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Deque.AxeCore.Playwright" />
+    <PackageReference Include="Microsoft.Extensions.Options" />
+    <PackageReference Include="Microsoft.Playwright" />
+    <PackageReference Include="SkiaSharp" />
+    <!-- libSkiaSharp.so for the Linux test containers; without it the screenshot URL overlay dies. -->
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux" />
+  </ItemGroup>
+	
+	<ItemGroup>
+		<ProjectReference Include="..\Automation.Configuration\Automation.Configuration.csproj" />
+		<ProjectReference Include="..\Bolt.Automation.Common\Bolt.Automation.Common.csproj" />
+		<ProjectReference Include="..\Bolt.Automation.TestDataProvider\Bolt.Automation.TestDataProvider.csproj" />
+	</ItemGroup>
+	
+</Project>

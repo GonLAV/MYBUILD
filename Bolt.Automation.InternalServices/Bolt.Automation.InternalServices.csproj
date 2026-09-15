@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Bolt.Microservice.Case.Interfaces" />
+      <PackageReference Include="Bolt.Microservice.Consumer.Interfaces" />
+      <PackageReference Include="Bolt.Microservice.Cryptography.Interfaces" />
+      <PackageReference Include="Bolt.Microservice.Policy.Interfaces" />
+      <PackageReference Include="Bolt.Microservice.Quote.Interfaces" />
+      <PackageReference Include="Castle.Core" />
+      <PackageReference Include="linq2db" />
+      <PackageReference Include="linq2db.SqlServer" />
+      <PackageReference Include="Microsoft.Data.SqlClient" />
+      <PackageReference Include="Microsoft.Extensions.Configuration" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Json" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+      <PackageReference Include="System.Data.SqlClient" />
+      <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Automation.Configuration\Automation.Configuration.csproj" />
+      <ProjectReference Include="..\Bolt.Automation.Common\Bolt.Automation.Common.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Database\Queries\Main\Provisioning\Models\" />
+      <Folder Include="Database\Queries\Main\ResultData\" />
+    </ItemGroup>
+
+</Project>

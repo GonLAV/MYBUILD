@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Castle.Core" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" />
+    <PackageReference Include="Microsoft.Extensions.Http" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Configuration" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" />
+    <PackageReference Include="Refit" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
+    <PackageReference Include="Microsoft.Playwright" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Bolt.Automation.Common\Bolt.Automation.Common.csproj" />
+    <ProjectReference Include="..\Bolt.Automation.FrontEnds\Bolt.Automation.FrontEnds.csproj" />
+	<ProjectReference Include="..\Automation.Configuration\Automation.Configuration.csproj" />
+    <ProjectReference Include="..\Bolt.Automation.ApiClients\Bolt.Automation.ApiClients.csproj" />
+    <ProjectReference Include="..\Bolt.Automation.ExternalServices\Bolt.Automation.ExternalServices.csproj" />
+    <ProjectReference Include="..\Bolt.Automation.InternalServices\Bolt.Automation.InternalServices.csproj" />
+    <ProjectReference Include="..\Bolt.Automation.TestDataProvider\Bolt.Automation.TestDataProvider.csproj" />
+  </ItemGroup>
+
+</Project>

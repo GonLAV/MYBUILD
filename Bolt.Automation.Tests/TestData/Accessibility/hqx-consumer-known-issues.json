@@ -1,0 +1,4 @@
+{
+  "_comment": "Known accessibility violations that must not fail the gate. Every entry requires a bugId - AccessibilityBaselineStore.Load throws without one. Key is (screen, state, ruleId); state accepts '*' to cover every state of a screen, which is deliberately visible in review.",
+  "knownIssues": []
+}

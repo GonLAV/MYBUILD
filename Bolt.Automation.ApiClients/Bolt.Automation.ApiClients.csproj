@@ -1,0 +1,59 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="SSO\Saml\Resources\ams360test.boltinsurance.com.p12" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Bolt.Microservice.Cryptography.Interfaces" />
+    <PackageReference Include="Bolt.OdmEntities" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" />
+    <PackageReference Include="HtmlAgilityPack" />
+    <PackageReference Include="Refit.HttpClientFactory" />
+    <PackageReference Include="Refit.Newtonsoft.Json" />
+    <PackageReference Include="System.Security.Cryptography.Xml" />
+    <PackageReference Include="System.ServiceModel.Http" />
+    <PackageReference Include="System.ServiceModel.Primitives" />
+  </ItemGroup>
+
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Automation.Configuration\Automation.Configuration.csproj" />
+    <ProjectReference Include="..\Bolt.Automation.Common\Bolt.Automation.Common.csproj" />
+  </ItemGroup>
+
+  
+  <ItemGroup>
+    <Compile Update="SSO\Saml\Resources\Resources.Designer.cs">
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Remove="PartnerPortalApiOptions.cs" />
+    <Compile Remove="GetQuoteApiOptions.cs" />
+    <Compile Remove="CaseManagerApiOptions.cs" />
+    <Compile Remove="BaseSsoObject.cs" />
+	  <Compile Remove="AdbxApiOptions.cs" />
+	  <Compile Remove="IntegrationHubApiOptions.cs" />
+  </ItemGroup>
+
+  
+  <ItemGroup>
+    <EmbeddedResource Update="SSO\Saml\Resources\Resources.resx">
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  
+  <ItemGroup>
+    <Folder Include="Infrastructure\Extensions\" />
+  </ItemGroup>
+
+</Project>

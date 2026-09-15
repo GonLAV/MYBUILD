@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>14.0</LangVersion>
+    <RootNamespace>Bolt.Automation.AgentTools</RootNamespace>
+    <AssemblyName>nexus-agent</AssemblyName>
+    <StartupObject>Bolt.Automation.AgentTools.Program</StartupObject>
+    <GenerateProgramFile>false</GenerateProgramFile>
+    <IsTestProject>false</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.SecretsManager" />
+    <!-- Required so the default credential chain can resolve an `aws sso login` profile
+         (SSO token -> short-lived creds) for `secrets sync` local dev runs. -->
+    <PackageReference Include="AWSSDK.SSO" />
+    <PackageReference Include="AWSSDK.SSOOIDC" />
+    <PackageReference Include="CommandLineParser" />
+    <PackageReference Include="Refit" />
+    <PackageReference Include="System.Text.Json" />
+    <PackageReference Include="YamlDotNet" />
+    <!-- Phase 6: the browser host directly uses Playwright types (IPage, etc.). -->
+    <PackageReference Include="Microsoft.Playwright" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Common: TrxParser, FileNameUtils, IScopeContext, IAutomationLogger, URL models.
+         Phase 6 'browser' host must CONSTRUCT and DRIVE the DI graph (not merely reflect
+         over it as 'code' does), so it references the framework directly:
+           Core             -> TestInfrastructure (config + service provider)
+           FrontEnds        -> PlaywrightExecutor, BrowserManager, IInterview, flow types
+           TestDataProvider -> TestContextAccessor (resolves per-tenant start URLs)
+           ApiClients       -> SamlSigner/SsoHelper for 'saml mint'. Explicit rather
+                               than transitive, since it is compiled against directly. -->
+    <ProjectReference Include="..\Bolt.Automation.ApiClients\Bolt.Automation.ApiClients.csproj" />
+    <ProjectReference Include="..\Bolt.Automation.Common\Bolt.Automation.Common.csproj" />
+    <ProjectReference Include="..\Bolt.Automation.Core\Bolt.Automation.Core.csproj" />
+    <ProjectReference Include="..\Bolt.Automation.FrontEnds\Bolt.Automation.FrontEnds.csproj" />
+    <ProjectReference Include="..\Bolt.Automation.TestDataProvider\Bolt.Automation.TestDataProvider.csproj" />
+  </ItemGroup>
+
+</Project>
