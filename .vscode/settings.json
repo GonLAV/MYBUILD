@@ -1,0 +1,5 @@
+{
+  "dotnet.enablePreviewSdks": true,
+  "dotnet.testExplorer.useNunitAndXunitWithTestingPlatform": true,
+  "dotnet.unitTests.runSettingsPath": "Bolt.Automation.Tests/vscode.runsettings"
+}
